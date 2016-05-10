@@ -3,13 +3,15 @@
 
   angular
     .module('anApp')
-    .controller('myMainCtrl', myMainCtrl);
+    .controller('sidebarCtrl', sidebarCtrl);
 
-  function myMainCtrl($scope) {
-    $scope.data = [ 
+  function sidebarCtrl() {
+    this.data = [ 
     	{ name: "Страницы", url: "pages" },
     	{ name: "Рубрики",  url: "topics" },
-    	{ name: "Новости",  url: "news" }
+    	{ name: "Новости!",  url: "news" }
     ];
+
+     
   }
 })();

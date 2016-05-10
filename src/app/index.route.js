@@ -25,18 +25,6 @@
       //  controller: 'myMainCtrl'
       //  controllerAs: 'main'
       })
-      .state('pages', {
-        url: '/pages',
-        templateUrl: 'app/main/myPages.html',
-        controller: function($scope) { $scope.pages = [ "P1", "P2", "P3", "P4" ]; }
-      })
-      .state('pages.item', {
-        url: '/:item',
-        templateUrl: 'app/main/page.html',
-        controller: function($scope, $stateParams) {
-          $scope.page = $stateParams.item; 
-        }
-      })
       .state('topics', {
         url: '/topics',
         template: '<div>Рубрики...</div>'

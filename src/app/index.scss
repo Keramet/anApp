@@ -35,6 +35,22 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 // endinjector
 
 h4.actv {
-	background: gray;
+	background: lightgray;
 	border-radius: 4px;
 }
+.warn {
+  color: red;
+}
+::-webkit-input-placeholder {
+   font-style: italic;
+}
+:-moz-placeholder {
+   font-style: italic;  
+}
+::-moz-placeholder {
+   font-style: italic;  
+}
+:-ms-input-placeholder {  
+   font-style: italic; 
+}
+

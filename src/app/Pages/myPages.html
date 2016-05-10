@@ -1,0 +1,31 @@
+
+<h3>Все страницы.</h3>
+<div class="row well">	
+	<div class="col-xs-2">
+		<!-- spinner -->
+	</div>	
+	<div class="input-group col-xs-10">
+		<input type="text" ng-model="mpCtrl.newPage" class="form-control" placeholder="Название новой страницы...">
+		<span class="input-group-btn">
+			<button ng-click="mpCtrl.addPage()" ng-disabled="mpCtrl.newPage.length == 0" class="btn btn-primary">Добавть страницу</button>
+		</span>
+	</div>
+	
+</div>
+
+<table class="table table-hover">
+<thead>
+	<tr>
+		<th>№</th>
+		<th>Название</th>
+	</tr>
+</thead>
+<tbody>
+	<tr ng-repeat="p in mpCtrl.pages">
+		<td>{{$index+1}}</td>
+		<td><a ui-sref="pages.item({item : p})">Страница "{{p}}"</a></td>
+	</tr>
+</tbody>	
+</table>
+
+<div ui-view></div>

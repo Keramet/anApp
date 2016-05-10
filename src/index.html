@@ -24,10 +24,13 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div class="row">
-        <div class="col-xs-3" ng-controller="mySidebarCtrl" ng-include="'app/main/mySidebar.html'">
-            
+        <acme-navbar></acme-navbar>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3" ng-include="'app/sidebar/sidebar.html'"></div>
+            <div class="col-xs-9" ui-view></div>
         </div>
-        <div class="col-xs-9"  ui-view></div>
     </div>
     <!-- <div ui-view class="container"></div> -->
 

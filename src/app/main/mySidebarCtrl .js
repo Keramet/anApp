@@ -5,6 +5,7 @@
     .module('anApp')
     .controller('mySidebarCtrl', mySidebarCtrl);
 
+  
   function mySidebarCtrl($scope) {
     $scope.data = [ 
     	{ name: "Страницы", url: "pages" },
