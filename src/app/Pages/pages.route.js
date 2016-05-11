@@ -11,16 +11,15 @@
       .state('pages', {
         url: '/pages',
         templateUrl: 'app/Pages/myPages.html',
-        controller: 'myPagesCtrl',
+        controller:   'myPagesCtrl',
         controllerAs: 'mpCtrl'
       })
       .state('pages.item', {
       //  url: '/:item',
-        url: '/{item}',
-        templateUrl: 'app/Pages/page.html',
-        controller: function($scope, $stateParams) {
-          $scope.page = $stateParams.item; 
-        }
+        url:          '/{item}',
+        templateUrl:  'app/Pages/page.html',
+        controller:   'pageCtrl',
+        controllerAs: 'pC'
       });
   }
 

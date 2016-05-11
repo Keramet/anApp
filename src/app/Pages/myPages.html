@@ -3,27 +3,27 @@
 <div class="row well">	
 	<div class="col-xs-2">
 		<!-- spinner -->
-	</div>	
-	<div class="input-group col-xs-10">
-		<input type="text" ng-model="mpCtrl.newPage" class="form-control" placeholder="Название новой страницы...">
-		<span class="input-group-btn">
-			<button ng-click="mpCtrl.addPage()" ng-disabled="mpCtrl.newPage.length == 0" class="btn btn-primary">Добавть страницу</button>
-		</span>
 	</div>
-	
+	<form name="npForm" class="input-group col-xs-10" ng-submit="mpCtrl.addPage()">	
+		<input ng-model="mpCtrl.newPage" name="np" required class="form-control" placeholder="Название новой страницы...">
+		<span class="input-group-btn">
+			<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary">Добавть страницу</button>
+		</span>
+	</form>	
+		
 </div>
 
 <table class="table table-hover">
 <thead>
 	<tr>
 		<th>№</th>
-		<th>Название</th>
+		<th>Страницы:</th>
 	</tr>
 </thead>
-<tbody>
+<tbody >
 	<tr ng-repeat="p in mpCtrl.pages">
 		<td>{{$index+1}}</td>
-		<td><a ui-sref="pages.item({item : p})">Страница "{{p}}"</a></td>
+		<td><a ui-sref="pages.item({item : p.name})">{{p}}</a></td>
 	</tr>
 </tbody>	
 </table>

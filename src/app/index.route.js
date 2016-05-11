@@ -21,9 +21,6 @@
       .state('home', {
         url: '/',
         template: '<h1>Главная страница!</h1>',
-      //  templateUrl: 'app/main/myMain.html',
-      //  controller: 'myMainCtrl'
-      //  controllerAs: 'main'
       })
       .state('topics', {
         url: '/topics',
