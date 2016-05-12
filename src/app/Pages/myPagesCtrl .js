@@ -16,41 +16,66 @@
 
 angular
 	.module('anApp')
-    .controller('myPagesCtrl', [ '$http', '$timeout', myPagesCtrl ])
-    .controller('pageCtrl', [ '$stateParams', pageCtrl ]);
+    .controller('myPagesCtrl', [ '$http', '$timeout', '$rootScope', myPagesCtrl ])
+    .controller('pageCtrl', [ '$stateParams', '$rootScope', pageCtrl ]);
 
 
-  function myPagesCtrl ($http, $timeout) {
+  function myPagesCtrl ($http, $timeout, $rootScope) {
   	var self = this;
 
   	$http.get('app/pages/pages.json')
   		.success( function (data) { 
   			self.pages = data;
+  			$rootScope.pages = data;
   		})
     	.error( function () {
     		self.pages = [ "P1", "P2" ];
+    		$rootScope.pages = self.pages;
     		console.log("Error with 'pages.json'");
     	});
+
+    this.showSpinner = false;
 
     this.addPage = function () {
 		this.pages.push( { 
 			"name": this.newPage,
-			 text: `Text of  page '${this.newPage}'`
+			"text": "Text of  page '" + this.newPage +"'"
 		});
     	this.newPage = "";
 
+    	this.showSpinner = true;
+
     	$timeout( function () {
-    		console.log("Прошло 5сек.");
-    	}, 5000 );
+    		self.showSpinner = false;
+    		// self.pages.push( { 
+    		// 	"name": self.newPage,
+    		// 	"text": `Text of  page '${self.newPage}'`
+    		// });
+    		// self.newPage = "";
+    		console.log("Прошло 3сек.");
+    	}, 3000 );
     };
 
-  	console.log(`self: ${self}.`);
-  }
+    
+  	console.log("self:");
+  	console.dir(self);
+  }// end of  myPagesCtrl
 
 
-  function pageCtrl ($stateParams) {
+
+
+  function pageCtrl ($stateParams, $rootScope) {
   	this.page = $stateParams.item;
-  	// console.log($index);
+
+  	// console.dir($rootScope.pages);
+  	// if (angular.isDefined( $rootScope.pages )) {
+  	// 	$rootScope.pages.forEach (function (elm, i) {
+  	// 		if (elm.name === this.page) this.n = i;
+  	// 	});
+  	// }
+  	
+
+
   }
 
 })();
