@@ -1,3 +1,13 @@
+<hr>
 <h3>{{pC.page}}.</h3>
-<h4>Текст: {{mpCtrl.pages[pC.n].text}}</h4>
-<h5>index: {{pC.n}}</h5>
+<i>Данные страницы:</i>
+<pre ng-repeat="p in mpCtrl.pages | filter:{name: pC.page}">
+{{p | json:4}}
+</pre>
+
+	<!-- <pre>
+		{{mpCtrl.pages | filter:{name: pC.page}:json }}
+	</pre> -->
+
+
+

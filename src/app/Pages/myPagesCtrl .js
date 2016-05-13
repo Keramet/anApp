@@ -37,28 +37,21 @@ angular
     this.showSpinner = false;
 
     this.addPage = function () {
-		this.pages.push( { 
-			"name": this.newPage,
-			"text": "Text of  page '" + this.newPage +"'"
-		});
-    	this.newPage = "";
-
     	this.showSpinner = true;
-
-    	$timeout( function () {
+	
+	   	$timeout( function () {
+			self.pages.push( {
+				"id": self.pages.length + 1,  
+				"name": self.newPage,
+				"text": "Text of  page '" + self.newPage +"'"
+			});
+			self.newPage = "";
     		self.showSpinner = false;
-    		// self.pages.push( { 
-    		// 	"name": self.newPage,
-    		// 	"text": `Text of  page '${self.newPage}'`
-    		// });
-    		// self.newPage = "";
     		console.log("Прошло 3сек.");
     	}, 3000 );
     };
 
-    
-  	console.log("self:");
-  	console.dir(self);
+    this.showInfo = true; 
   }// end of  myPagesCtrl
 
 
@@ -66,16 +59,7 @@ angular
 
   function pageCtrl ($stateParams, $rootScope) {
   	this.page = $stateParams.item;
-
-  	// console.dir($rootScope.pages);
-  	// if (angular.isDefined( $rootScope.pages )) {
-  	// 	$rootScope.pages.forEach (function (elm, i) {
-  	// 		if (elm.name === this.page) this.n = i;
-  	// 	});
-  	// }
-  	
-
-
+  //	mpCtrl.showInfo = false; 
   }
 
 })();
