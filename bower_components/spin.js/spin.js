@@ -154,7 +154,7 @@
   , radius: 4            // The radius of the inner circle
   , scale: 1.0            // Scales overall size of the spinner
   , corners: 1            // Roundness (0..1)
-  , color: 'blue'         // #rgb or #rrggbb
+  , color: 'navy'         // #rgb or #rrggbb
   , opacity: 1/5          // Opacity of the lines
   , rotate: 0             // Rotation offset
   , direction: -1          // 1: clockwise, -1: counterclockwise

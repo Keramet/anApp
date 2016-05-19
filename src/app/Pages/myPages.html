@@ -1,16 +1,23 @@
 
 <h3>Все страницы.</h3>
 <div class="row well">	
-	<div class="col-xs-2" style="text-align: right; margin-top: 10px;">
+	<div class="col-xs-2" >
 		<!-- spinner -->
-		<span us-spinner="{radius:8, width:12, length: 2}" spinner-on="mpCtrl.showSpinner"></span>
-		<b ng-if="mpCtrl.showSpinner">Загрузка!</b>
+		<my-spinner ng-if="mpCtrl.showSpinner"></my-spinner>
 	</div>
-	<form name="npForm" class="input-group col-xs-10" ng-submit="mpCtrl.addPage()">	
-		<input ng-model="mpCtrl.newPage" name="np" required class="form-control" placeholder="Название новой страницы...">
-		<span class="input-group-btn">
-			<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary">Добавть страницу</button>
-		</span>
+	<form name="npForm" class="col-xs-10" ng-submit="mpCtrl.addPage()">
+		<div class="row input-group">
+			<input ng-model="mpCtrl.npUrl" name="npUrl" required class="form-control" placeholder="URL или ID новой страницы...">
+			<span class="input-group-btn">
+				<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary">Добавть страницу</button>
+			</span>
+		</div><br>
+		<div class="row">
+			<input ng-model="mpCtrl.npName" name="np"  class="form-control" placeholder="Название новой страницы...">
+		</div><br>
+		<div class="row">
+			<textarea ng-model="mpCtrl.npCaption" name="npCaption"  class="form-control" placeholder="Текст новой страницы..."></textarea>
+		</div>
 	</form>	
 		
 </div>
@@ -19,7 +26,7 @@
 <thead>
 	<tr>
 		<th>ID:</th>
-		<th>Страницы:</th>
+		<th>Страница:</th>
 	</tr>
 </thead>
 <tbody>
@@ -29,5 +36,5 @@
 	</tr>
 </tbody>	
 </table>
-<sub ng-if="mpCtrl.showInfo">нажмите на странице для получения детальной информации... </sub>
+<p ng-if="mpCtrl.showInfo" class="text-right"><sub><i>Нажмите на страницу для получения детальной информации... </i></sub></p>
 <div ui-view></div>

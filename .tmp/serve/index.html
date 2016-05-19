@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>anApp</title>
+    <base href="/">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,7 +19,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="app/index.css">
     <!-- endinject -->
-    <!-- endbuild -->
+    <!-- endbuild -->  
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -28,10 +29,13 @@
         <acme-navbar></acme-navbar>
     </div>
     <div class="container">
-        <div class="row">
-            <div class="col-xs-3" ng-include="'app/sidebar/sidebar.html'"></div>
-            <div class="col-xs-9" ui-view></div>
+        <div class="col-xs-3">
+            <div class="row"  ng-include="'app/sidebar/sidebar.html'"></div>
+            <div class="row">
+                <my-sidebar></my-sidebar>
+            </div>
         </div>
+        <div class="col-xs-9" ui-view></div>
     </div>
     <!-- <div ui-view class="container"></div> -->
 
@@ -53,6 +57,8 @@
     <script src="../bower_components/moment/moment.js"></script>
     <script src="../bower_components/spin.js/spin.js"></script>
     <script src="../bower_components/angular-spinner/angular-spinner.js"></script>
+    <script src="../bower_components/firebase/firebase.js"></script>
+    <script src="../bower_components/angularfire/dist/angularfire.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -63,6 +69,7 @@
     <script src="app/components/navbar/navbar.directive.js"></script>
     <script src="app/components/malarkey/malarkey.directive.js"></script>
     <script src="app/components/githubContributor/githubContributor.service.js"></script>
+    <script src="app/mySpinner/mySpinnerDir.js"></script>
     <script src="app/main/mySidebarCtrl .js"></script>
     <script src="app/main/main.controller.js"></script>
     <script src="app/Sidebar/sidebarCtrl .js"></script>

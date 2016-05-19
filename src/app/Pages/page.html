@@ -1,9 +1,16 @@
 <hr>
-<h3>{{pC.page}}.</h3>
-<i>Данные страницы:</i>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h4>Страница <span class="label label-info">{{pC.page}}</span></h4>
+	</div>
+	<div class="panel-body">
+	<i>Данные страницы:</i>
 <pre ng-repeat="p in mpCtrl.pages | filter:{name: pC.page}">
 {{p | json:4}}
-</pre>
+</pre>	
+	</div>
+</div>
+
 
 	<!-- <pre>
 		{{mpCtrl.pages | filter:{name: pC.page}:json }}

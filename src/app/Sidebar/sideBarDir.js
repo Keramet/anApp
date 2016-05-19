@@ -3,19 +3,33 @@
 
   angular
     .module('anApp')
-    .directive('mySidebar', function () {
-      return function (scope, element, attrs) {
-        var data = scope.sbCtrl['data'],
-            el = angular.element("<ul>"),
-            i, len;
+    .directive('mySidebar', function ($firebaseObject) {
+      var sbRef = new Firebase("https://my-anapp.firebaseio.com/sidebar/"),
+          sbObj = $firebaseObject( sbRef );
 
-        if ( angular.isArray(data) ) {
-          for (i = 0, len = data.length; i < len; i++) {
-            el.append( angular.element("<li>").text(data[i].name) );
-          }
-          element.append(el);
-        } else { console.log("'data' не является массивом!"); }
+      return {
+        restrict: "E",
+        replace: true,
+        scope: {},
+        template: [ "<div class='mySidebar' ng-show='show'>",
+                      "<em>Директива <b>mySidebar</b></em>",
+                      "<h4 ng-repeat='item in data' ui-sref-active='actv'>",
+                        "<a ui-sref='{{item.url}}'>{{item.name}}</a>",
+                      "</h4>",
+                    "</div>" ].join(""),
 
+        link: function (scope, element, attrs) {
+          scope.data = [];
+
+          sbObj.$loaded()
+            .then( function (data) {
+              angular.forEach(data, function (val, key) {
+                scope.data.push( {"name": val, "url": key} ); 
+              });
+              scope.show = true;
+            })
+            .catch( function (e) { console.dir(e); });
+        }        
       }
     });
 

@@ -41,11 +41,13 @@ angular
 	
 	   	$timeout( function () {
 			self.pages.push( {
-				"id": self.pages.length + 1,  
-				"name": self.newPage,
-				"text": "Text of  page '" + self.newPage +"'"
+				"id"  : self.npUrl,  
+				"name": self.npName || "name of new page!",
+				"text": self.npCaption || "Text of new page..."
 			});
-			self.newPage = "";
+			self.npUrl = "";
+			self.npName = "";
+			self.npCaption = "";
     		self.showSpinner = false;
     		console.log("Прошло 3сек.");
     	}, 3000 );

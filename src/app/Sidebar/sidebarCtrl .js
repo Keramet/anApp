@@ -3,15 +3,47 @@
 
   angular
     .module('anApp')
-    .controller('sidebarCtrl', sidebarCtrl);
+    .controller('sidebarCtrl', [ '$firebaseObject', '$firebaseArray', sidebarCtrl ]);
 
-  function sidebarCtrl() {
+  function sidebarCtrl($firebaseObject, $firebaseArray) {
+
     this.data = [ 
     	{ name: "Страницы", url: "pages" },
     	{ name: "Рубрики",  url: "topics" },
-    	{ name: "Новости!",  url: "news" }
+    	{ name: "Новости!", url: "news" }
     ];
 
-     
-  }
+    var sbRef = new Firebase("https://my-anapp.firebaseio.com/sidebar/"),
+        sbObj = $firebaseObject( sbRef );
+
+    this.saveSb = function () {
+      sbRef.child(this.url).set(this.val)
+        .then( function() {
+          console.log("Данные сохранены!");
+        }, function () {
+          console.log("Ошибка сохранения...");
+        });
+ 
+      this.val = "";
+      this.url = "";
+    }
+
+    this.getSb = function () {    
+      sbObj.$loaded()
+        .then( function (data) {
+          angular.forEach(data, function (val, key) {
+            console.log(key + " : " + val);
+          });
+        })
+        .catch( function (e) {
+          console.dir(e);
+        });
+    }
+
+  } 
 })();
+
+
+
+
+

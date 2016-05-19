@@ -35,11 +35,22 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 // endinjector
 
 h4.actv {
-	background: lightgray;
+	// background: lightgray;
+  background: blue;
 	border-radius: 4px;
 }
 .warn {
   color: red;
+}
+.mySidebar {
+  border-radius: 5px;
+  border: 1px solid blue;
+  color: navy;
+  background: lightblue;
+}
+div.spinner {
+  left: 50%;
+  margin-top: 12px;
 }
 ::-webkit-input-placeholder {
    font-style: italic;
