@@ -1,11 +1,11 @@
 <hr>
 <div class="panel panel-primary">
 	<div class="panel-heading">
-		<h4>Страница <span class="label label-info">{{pC.page}}</span></h4>
+		<h4>Пост <span class="label label-info">{{pC.post}}</span></h4>
 	</div>
 	<div class="panel-body">
-	<i>Данные страницы:</i>
-<pre ng-repeat="p in mpCtrl.pages | filter:{name: pC.page}">
+	<i>Данные поста:</i>
+<pre ng-repeat="p in mpCtrl.posts | filter:{name: pC.post}">
 {{p | json:4}}
 </pre>	
 	</div>

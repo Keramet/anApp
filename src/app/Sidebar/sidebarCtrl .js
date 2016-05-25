@@ -8,9 +8,9 @@
   function sidebarCtrl($firebaseObject, $firebaseArray, fbSvc) {
 
     this.data = [ 
-    	{ name: "Страницы", url: "pages" },
-    	{ name: "Рубрики",  url: "topics" },
-    	{ name: "Новости!", url: "news" }
+    	{ name: "Посты", url: "posts" },
+    	{ name: "Категории!",  url: "tags" },
+    	{ name: "Комментарии...", url: "comments" }
     ];
 
     var sbRef = new Firebase("https://my-anapp.firebaseio.com/sidebar/"),

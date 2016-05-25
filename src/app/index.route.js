@@ -31,18 +31,18 @@
       //   templateUrl: 'app/Config/config.tpl.html'
       // //  controller: 'myMainCtrl',
       // })
-      .state('posts', {
-        url: '/news',
-        template: '<div>Записи (посты)</div>',
-      //  controller: 'myMainCtrl',
-      })
+      // .state('posts', {
+      //   url: '/posts',
+      //   template: '<div>Записи (посты)</div>',
+      // //  controller: 'myMainCtrl',
+      // })
       .state('tags', {
         url: '/tags',
         template: '<div>Категории</div>',
       //  controller: 'myMainCtrl',
       })
       .state('comments', {
-        url: '/news',
+        url: '/comments',
         template: '<div>Комментарии</div>',
       //  controller: 'myMainCtrl',
       })  ;

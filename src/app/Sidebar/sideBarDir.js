@@ -24,9 +24,6 @@
               });
             });
 
-          // fbSvc('sidebar').getData( function(data) {
-          //   scope.data = data;
-          // });
           scope.showSb = function () { return scope.data.length > 0 }
         }        
       }

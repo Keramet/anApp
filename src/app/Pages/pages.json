@@ -1,7 +1,0 @@
-[ 
-	{ "id": 5, "name": "P5", "text": "Text on the page 'P5'." },
-	{ "id": 3, "name": "P3", "text": "Text on the page 'P3'." },
-	{ "id": 4, "name": "P4", "text": "Text on the page 'P4'." },
-	{ "id": 1, "name": "P1", "text": "Text on the page 'P1'." },
-	{ "id": 2, "name": "P2", "text": "Text on the page 'P2'." }
-]
