@@ -16,11 +16,11 @@
 
 angular
 	.module('anApp')
-    .controller('myPagesCtrl', [ '$http', '$timeout', '$rootScope', myPagesCtrl ])
+    .controller('myPagesCtrl', [ '$http', '$timeout', '$rootScope', 'FB_URL', myPagesCtrl ])
     .controller('pageCtrl', [ '$stateParams', '$rootScope', pageCtrl ]);
 
 
-  function myPagesCtrl ($http, $timeout, $rootScope) {
+  function myPagesCtrl ($http, $timeout, $rootScope, FB_URL) {
   	var self = this;
 
   	$http.get('app/pages/pages.json')
@@ -35,9 +35,11 @@ angular
     	});
 
     this.showSpinner = false;
+    this.showInfo = true;
 
     this.addPage = function () {
     	this.showSpinner = true;
+    	console.log(FB_URL);
 	
 	   	$timeout( function () {
 			self.pages.push( {
@@ -53,7 +55,8 @@ angular
     	}, 3000 );
     };
 
-    this.showInfo = true; 
+    this.clearF = function () { this.f = ""; }
+
   }// end of  myPagesCtrl
 
 

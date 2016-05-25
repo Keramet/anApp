@@ -26,11 +26,26 @@
         url: '/topics',
         template: '<div>Рубрики...</div>'
       })
-      .state('news', {
+      // .state('config', {
+      //   url: '/config',
+      //   templateUrl: 'app/Config/config.tpl.html'
+      // //  controller: 'myMainCtrl',
+      // })
+      .state('posts', {
         url: '/news',
-        template: '<div>Новости</div>',
+        template: '<div>Записи (посты)</div>',
       //  controller: 'myMainCtrl',
-      });
+      })
+      .state('tags', {
+        url: '/tags',
+        template: '<div>Категории</div>',
+      //  controller: 'myMainCtrl',
+      })
+      .state('comments', {
+        url: '/news',
+        template: '<div>Комментарии</div>',
+      //  controller: 'myMainCtrl',
+      })  ;
 
     
   }

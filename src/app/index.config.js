@@ -17,7 +17,7 @@
     toastrConfig.preventDuplicates = true;
     toastrConfig.progressBar = true;
 
-    $locationProvider.html5Mode(true).hashPrefix('#');
+    $locationProvider.html5Mode(true);
   }
 
 })();

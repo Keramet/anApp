@@ -3,9 +3,9 @@
 
   angular
     .module('anApp')
-    .controller('sidebarCtrl', [ '$firebaseObject', '$firebaseArray', sidebarCtrl ]);
+    .controller('sidebarCtrl', [ '$firebaseObject', '$firebaseArray', 'fbSvc', sidebarCtrl ]);
 
-  function sidebarCtrl($firebaseObject, $firebaseArray) {
+  function sidebarCtrl($firebaseObject, $firebaseArray, fbSvc) {
 
     this.data = [ 
     	{ name: "Страницы", url: "pages" },
@@ -28,16 +28,21 @@
       this.url = "";
     }
 
-    this.getSb = function () {    
-      sbObj.$loaded()
+    this.getSb = function () { 
+      fbSvc('sidebar').getData()
         .then( function (data) {
-          angular.forEach(data, function (val, key) {
-            console.log(key + " : " + val);
-          });
-        })
-        .catch( function (e) {
-          console.dir(e);
-        });
+          console.log("Данные сайдбара: ", data);
+        });  
+      // console.log("Данные сайдбара: ", fbSvc('sidebar').data);   
+      // sbObj.$loaded()
+      //   .then( function (data) {
+      //     angular.forEach(data, function (val, key) {
+      //       console.log(key + " : " + val);
+      //     });
+      //   })
+      //   .catch( function (e) {
+      //     console.dir(e);
+      //   });
     }
 
   } 

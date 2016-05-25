@@ -5,6 +5,6 @@
   angular
     .module('anApp')
     .constant('malarkey', malarkey)
-    .constant('moment', moment);
-
+    .constant('moment', moment)
+    .constant('FB_URL', "https://my-anapp.firebaseio.com/");
 })();
