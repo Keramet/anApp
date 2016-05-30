@@ -1,0 +1,25 @@
+
+<div class="row headDiv">
+  <div class="col-xs-4">
+    <span class="h2">КАТЕГОРИИ</span>
+    <i>({{posts.length}})</i>
+  </div>
+  <div class="col-xs-2">
+    <button class="btn btn-success" title="Добавить информацию" ng-click="clickAdd()">
+      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true">&ensp;Добавить</span>
+    </button>
+  </div>
+  <div class="col-xs-6 text-right">
+    <form role="form" class="form-inline">
+      <input class="form-control" ng-model="f"  placeholder="Отфильтровать...">
+
+      <button type="submit" class="btn btn-primary" title="Очистить фильтр" ng-click="clearF()">
+        <span class="glyphicon glyphicon-erase" aria-hidden="true" ></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+
+
+

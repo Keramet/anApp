@@ -3,23 +3,52 @@
 
   angular
     .module('anApp')
-    .factory('fbSvc', [ '$firebaseObject', 'FB_URL', fbSvc ]);
+    .factory('fbSvc', [ '$firebaseObject', '$firebaseArray', 'FB_URL', fbSvc ]);
   
 
-  function fbSvc ($firebaseObject, FB_URL) {
+  function fbSvc ($firebaseObject, $firebaseArray, FB_URL) {
     var fb = new Firebase(FB_URL);
 
     return function (ref) {
       var fbObj = $firebaseObject( fb.child(ref) ),
+          fbArr = $firebaseArray( fb.child(ref) ),
           result = {};
 
       result.getData = function () {
         return fbObj.$loaded();
       }
 
+      result.getDataA = function () {
+        return fbArr.$loaded();
+      }
+
+      result.getRecord = function (rec) {
+        return fbArr.$loaded()
+          .then( function (data) {
+            // var r = data.$getRecord( rec );
+            // console.log("getRecord: ", r);
+            // return r;
+            return data.$getRecord( rec );
+          });
+      }
+
+      result.removeRecord = function (data, rec) {
+        return data.$remove(rec)
+          .then( function () {
+            console.log("Пост удалён");
+          });
+      }
+
       result.saveData = function (id, data) {
         return fb.child(ref).child(id).set( data );
       }
+
+      result.pushData = function (data) {
+        return fb.child(ref).push( data );
+      }
+
+      
+
 
       // result.data = [];
 
@@ -40,6 +69,7 @@
     }
   }
 })();
+
 
 
 

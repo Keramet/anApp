@@ -15,12 +15,13 @@ angular
           .then( function (data) {
             self.sbData = data;
             self.sbShow = true;
-            console.log("Данные сайдбара: ", self.sbData);
+            // console.log("Данные сайдбара: ", self.sbData);
           }); 
 
         this.uSb = function (url) {
-          this.sb.url  = url;
-          this.sb.name = this.sbData[url];
+          this.sb.url   = url;
+          this.sb.name  = this.sbData[url].name;
+          this.sb.glyph = this.sbData[url].glyph;
         }
 
         this.dSb = function (url) {
@@ -31,10 +32,15 @@ angular
         }
 
         this.saveSb = function () {
-          fbSvc('sidebar').saveData(this.sb.url, this.sb.name)
+          var data = {};
+          data.name = this.sb.name;
+          data.glyph = this.sb.glyph || "";
+
+          fbSvc('sidebar').saveData(this.sb.url, data)
             .then( function () {
               self.sb.url  = "";
               self.sb.name = "";
+              self.sb.glyph = "";
               $scope.$apply();  //   подумать, как по-другому (без инджекта скоупа)? Может, $scope.sb.url = ""?
               console.log("Данные сайдбара сохранены!"); 
             });

@@ -19,33 +19,20 @@
 
     $stateProvider
       .state('home', {
-        url: '/',
-        template: '<h1>Главная страница!</h1>',
+        url:          '/',
+        controller:   'mainPageCtrl',
+        controllerAs: 'mpC', 
+        template: [ 
+          '<h1>Главная страница!</h1>',
+          '<div class="row stylish-panel" ng-if="mpC.showPanel">',
+            '<panel-dir ng-repeat="(key, value) in mpC.data"></panel-dir>',
+          '</div>' ].join("")                
       })
       .state('topics', {
         url: '/topics',
         template: '<div>Рубрики...</div>'
-      })
-      // .state('config', {
-      //   url: '/config',
-      //   templateUrl: 'app/Config/config.tpl.html'
-      // //  controller: 'myMainCtrl',
-      // })
-      // .state('posts', {
-      //   url: '/posts',
-      //   template: '<div>Записи (посты)</div>',
-      // //  controller: 'myMainCtrl',
-      // })
-      .state('tags', {
-        url: '/tags',
-        template: '<div>Категории</div>',
-      //  controller: 'myMainCtrl',
-      })
-      .state('comments', {
-        url: '/comments',
-        template: '<div>Комментарии</div>',
-      //  controller: 'myMainCtrl',
-      })  ;
+      });
+
 
     
   }

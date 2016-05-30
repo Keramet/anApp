@@ -30,10 +30,10 @@
     </div>
     <div class="container">
         <div class="col-xs-3">
-            <div class="row"  ng-include="'app/sidebar/sidebar.html'"></div>
-            <div class="row">
+            <!-- <div class="row"  ng-include="'app/sidebar/sidebar.html'"></div> -->
+            <!-- <div class="container"> -->
                 <my-sidebar></my-sidebar>
-            </div>
+            <!-- </div> -->
         </div>
         <div class="col-xs-9" ui-view></div>
     </div>
@@ -65,13 +65,18 @@
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
     <!-- inject:js -->
     <script src="app/index.module.js"></script>
+    <script src="app/main/panelDir/panelDir.js"></script>
+    <script src="app/main/headDivDir/headDivDir.js"></script>
     <script src="app/components/webDevTec/webDevTec.service.js"></script>
     <script src="app/components/navbar/navbar.directive.js"></script>
     <script src="app/components/malarkey/malarkey.directive.js"></script>
     <script src="app/components/githubContributor/githubContributor.service.js"></script>
     <script src="app/mySpinner/mySpinnerDir.js"></script>
+    <script src="app/main/mainPageCtrl.js"></script>
     <script src="app/main/main.controller.js"></script>
     <script src="app/main/fbSvc .js"></script>
+    <script src="app/Tags/tagsCtrl.js"></script>
+    <script src="app/Tags/tags.route.js"></script>
     <script src="app/Sidebar/sidebarCtrl .js"></script>
     <script src="app/Sidebar/sideBarDir.js"></script>
     <script src="app/Posts/posts.route.js"></script>
@@ -79,6 +84,8 @@
     <script src="app/Config/sbConfigCtrl.js"></script>
     <script src="app/Config/configCtrl .js"></script>
     <script src="app/Config/config.route.js"></script>
+    <script src="app/Comments/commentsCtrl.js"></script>
+    <script src="app/Comments/comments.route.js"></script>
     <script src="app/index.run.js"></script>
     <script src="app/index.route.js"></script>
     <script src="app/index.constants.js"></script>

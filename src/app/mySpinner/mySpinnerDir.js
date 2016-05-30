@@ -10,11 +10,11 @@
         scope: {},
         template: [
           "<div class='spinner'>",
-            "<span us-spinner='{radius:8, width:10, length: 4}' spinner-on='true'></span>",
+            "<span us-spinner='{radius:8, width:10, length:4}' spinner-on='true'></span>",
           "</div>"  
         ].join(""),
 
-        link: function (scope, element, attrs) {  }        
+        link: function (scope, element, attrs) {}        
       }
     });
 

@@ -34,6 +34,14 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 // injector
 // endinjector
 
+.headDiv {
+  // border: 1px solid blue;
+  margin-bottom: 10px;
+}
+  .headDiv span {
+    margin-top: 5px;
+  } 
+
 h4.actv {
 	// background: lightgray;
   background: blue;

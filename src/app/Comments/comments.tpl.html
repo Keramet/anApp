@@ -1,8 +1,5 @@
 
-<head-div-dir></head-div-dir>
-
-<h3>ПОСТЫ <small><i>({{mpCtrl.posts.length}})</i></small></h3>
-<a id="addPost"></a>
+<h3>КОММЕНТАРИИ</h3>
 <div class="row well">	
 	<div class="col-xs-2" >
 		<!-- spinner -->
@@ -12,7 +9,7 @@
 		<div class="row input-group">
 			<input ng-model="mpCtrl.npUrl" name="npUrl" required class="form-control" placeholder="URL или ID нового поста...">
 			<span class="input-group-btn">
-				<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary" title="Сохранить данные поста">Сохранить</button>
+				<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary">Добавть пост</button>
 			</span>
 		</div><br>
 		<div class="row">
@@ -21,35 +18,12 @@
 		<div class="row">
 			<textarea ng-model="mpCtrl.npCaption" name="npCaption"  class="form-control" placeholder="Текст нового поста..."></textarea>
 		</div>
-		<div class="row">
-			<label>Опубликовать
-				<input type="checkbox" ng-model="mpCtrl.published">
-			</label>	
-		</div>
-		<div class="row">
-			<div class="col-xs-6 text-right">
-				<label for="selectTags">Катагирии поста:</label><br>
-				<i>(для выбора нескольких категорий, удерживайте <code>Ctrl</code> или <code>Shift</code>)</i>
-			</div>
-			<div class="col-xs-6">
-				<select 
-					ng-model="mpCtrl.sel" multiple
-					ng-options="tagK as tagV.name for (tagK, tagV) in mpCtrl.tags"
-					class="form-control"
-					ng-selected="true"
-					id="selectTags">
-					<option value="">-- Без категорий --</option>
-				</select>
-				<!-- ng-options="tag.name for tag in mpCtrl.tags" -->
-			</div>
-		</div>
-		
 	</form>	
+		
 </div>
 
 <hr>
 
-<a id="allPosts"></a>
 <table class="table table-hover">
 <thead>
 	<tr class="row">
@@ -71,10 +45,10 @@
 	</tr>
 </thead>
 <tbody>
-	<tr ng-repeat="p in mpCtrl.posts | filter:mpCtrl.f | orderBy:'-date'" class="row">
-		<td><small>{{p.date | date:'dd.MM.yy  HH:mm'}}</small></td>
+	<tr ng-repeat="p in mpCtrl.posts | filter:mpCtrl.f | orderBy:'-id'" class="row">
+		<td><small>{{p.date | date:'dd.MM.yy HH:mm'}}</small></td>
 		<td>{{p.id}}</td>
-		<td><a ui-sref="posts.item({item : p.$id})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a></td>
+		<td><a ui-sref="posts.item({item : p.name})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a></td>
 	</tr>
 </tbody>	
 </table>
