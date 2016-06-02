@@ -11,58 +11,83 @@ angular
   function myPostsCtrl ($http, $timeout, $rootScope, fbSvc) {
   	var self = this;
 
-    this.published = true;
-  	// $http.get('app/Posts/posts.json')
-  	// 	.success( function (data) { 
-  	// 		self.posts = data;
-  	// 		$rootScope.posts = data;
-  	// 	})
-   //  	.error( function () {
-   //  		self.posts = [ "P1", "P2" ];
-   //  		$rootScope.posts = self.posts;
-   //  		console.log("Error with 'posts.json'");
-   //  	});
+    this.postCount   = 10;
+    this.nextId      = null;
+    this.showSpinner = false;
+    this.showAddPost = false;
+    this.isShowTagF  = false;
+    this.showInfo    = true;   //  надпись, предлагающая кликнуть на посте
+    
+    this.loadData = function () {
+      fbSvc('posts').getDataA( this.postCount, this.nextId )
+        .then( function (data) {
+          self.posts  = data;
+          self.nextId = data[0].$id;
+        });
+    }
+    this.loadData();
 
-    fbSvc('posts').getDataA()
-      .then( function (data) {
-        self.posts = data;
-        console.log("posts (array): ", data);
-      });
-
-    // fbSvc('posts').getData() 
-    //   .then( function (data) {
-    //     self.postsObj = data;
-    //     console.log("postsObj: ", data);
-    //   } );
+    this.changeF = function () {
+      console.log(this.tagF);
+      fbSvc('posts').getDataA( this.postCount, this.nextId, this.tagF )
+        .then( function (data) {
+          self.posts  = data;
+          self.nextId = data[0].$id;
+        });
+    }
 
     fbSvc('tags').getData() 
       .then( function (data) {
         self.tags = data;
-        // console.log("self.tags: ", data);
-        // console.log("self.tags == data: ", self.tags == data);
       })
-      .then( function () {
+      /*.then( function () {
         self.sel = [ "u2", "bnnn" ];
-      });
+      })*/;
 
-    this.showSpinner = false;
-    this.showInfo    = true;   //  надпись, предлагающая кликнуть на посте
+    this.showTagF = function () {
+      this.isShowTagF = !this.isShowTagF;
+      if (this.isShowTagF) {
+        $timeout( function () {
+          angular.element("#tagF").focus();
+        }, 0 ); 
+      }
+    }
+
+    this.clickAdd = function () {
+      this.showAddPost = !this.showAddPost;
+      
+      if (this.showAddPost) {
+        this.published  = true;
+        $timeout( function () {
+          angular.element("input[name=npUrl]").focus();
+        }, 0 ); 
+      }
+    }
 
     this.addPost = function () {
      	this.showSpinner = true;
 
       var post = {
-        "id"    : self.npUrl,  
-        "name"  : self.npName || "name of new post!",
-        "text"  : self.npCaption || "Text of new post...",
-        "date"  : Date.now(),
-        "tagIds": this.sel,
-        "published": self.published,
-      };
-      
-      console.log("this.sel: ", this.sel);
-      console.log("this.tags: ", this.tags);
-      console.log("this.sel[0]: ", this.sel[0]);
+            "name" : self.npName || "name of new post!",
+            "text" : self.npCaption || "Text of new post...",
+            "date" : Date.now(),
+            "tagId": this.sel,
+            "published": self.published
+          },
+          tagsObj = {};
+
+      // if (this.sel.length > 0) {
+      //   angular.forEach(this.sel, function(val) {
+      //     tagsObj[ val ] = true;   
+      //   });
+      //   post["tagIds"] = tagsObj
+      // } else {
+      //   console.log("this.sel: ", this.sel);
+      // }
+          
+      // console.log("this.sel: ", this.sel);
+      // console.log("this.tags: ", this.tags);
+      // console.log("this.sel[0]: ", this.sel[0]);
       
 	
 	   	$timeout( function () {
@@ -73,6 +98,7 @@ angular
         self.npName = "";
         self.npCaption = "";
         self.showSpinner = false;
+        self.showAddPost = false;
         console.log("Прошло 3сек.");
         return fbSvc('posts').getDataA(); 
        })
@@ -83,9 +109,8 @@ angular
       }) ;
     }
    
-  //  this.clearF       = function () { this.f = ""; }
+    this.clearF = function () { this.f = ""; }  
     this.clickPostRef = function () { this.showInfo = false; }
-    this.clickAdd = function () { console.log("clickAdd"); }
 
   }// end of  mypostsCtrl
 

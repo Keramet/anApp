@@ -9,12 +9,12 @@
         replace: true,
         scope: {},
         template: [
-          "<div class='mySidebar1 panel panel-info' ng-show='showSb()'>",
-            "<div class='panel-heading'><em>Директива <b>mySidebar</b></em></div>",
+          "<div class='mySidebar1 panel panel-info' ng-show='show'>",
+            "<div class='panel-heading'><em>Основные разделы</em></div>",
             "<div class='panel-body'>",
-              "<h4 ng-repeat='item in data' ui-sref-active='actv'>",
-                "<a ui-sref='{{item.url}}'>",
-                  "<span class='glyphicon {{item.glyph}}' aria-hidden='true'></span>&ensp;{{item.name}}",
+              "<h4 ng-repeat='(key, val) in data' ui-sref-active='actv'>",
+                "<a ui-sref='{{key}}'>",
+                  "<span class='glyphicon {{val.glyph}}' aria-hidden='true'></span>&ensp;{{val.name}}",
                 "</a>",
               "</h4>",
             "</div>",  
@@ -22,23 +22,14 @@
         ].join(""),
 
         link: function (scope, element, attrs) {
-          scope.data = [];
           fbSvc('sidebar').getData()
             .then( function (data) {
-              angular.forEach( data, function (val, key) {  // надо ли преобразовывать или сразу scope.data = data ?
-                scope.data.push( {"name": val.name, "url": key, "glyph": val.glyph} ); 
-              });
+              scope.data = data;
+              scope.show = true;
             });
-
-          scope.showSb = function () { return scope.data.length > 0 }
         }        
       }
     });
 
 })();
 
-
-// <div class="panel panel-info">
-//  <div class="panel-heading">Панель с классом panel-info</div>
-//  <div class="panel-body">Текст</div>
-//  </div>

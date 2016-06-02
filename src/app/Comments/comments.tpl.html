@@ -1,56 +1,130 @@
 
-<h3>КОММЕНТАРИИ</h3>
-<div class="row well">	
-	<div class="col-xs-2" >
-		<!-- spinner -->
-		<my-spinner ng-if="mpCtrl.showSpinner"></my-spinner>
+
+
+<div class="row well headDiv">
+	<div class="col-xs-5">
+		<span class="h2">КОММЕНТАРИИ</span>
+		<i>({{cC.comments.length}})</i>
 	</div>
-	<form name="npForm" class="col-xs-10" ng-submit="mpCtrl.addPost()">
+	<div class="col-xs-2">
+		<button ng-click="cC.clickAdd()" class="btn" ng-class="{'btn-success':!cC.showAddComment , 'btn-danger':cC.showAddComment}" title="Добавление комментария">
+			<span class="glyphicon glyphicon-plus-sign" ng-if="!cC.showAddComment" aria-hidden="true">&ensp;Добавить</span>
+			<span class="glyphicon glyphicon-remove" ng-if="cC.showAddComment" aria-hidden="true">&ensp;Отмена&ensp;</span>
+		</button>
+	</div>
+	<div class="col-xs-5 text-right">
+		<form role="form" class="form-inline">
+			<input class="form-control" ng-model="cC.f"  placeholder="фильтр комментариев...">
+
+			<button type="submit" class="btn btn-primary" title="Очистить фильтр" ng-click="cC.clearF()">
+				<span class="glyphicon glyphicon-erase" aria-hidden="true" ></span>
+			</button>
+		</form>
+	</div>
+</div>
+
+
+<a id="addComment"></a>
+<div class="row well" ng-if="cC.showAddComment">	
+	<div class="col-xs-2" >
+		<my-spinner ng-if="cC.showSpinner"></my-spinner>
+	</div>
+	<form name="ncForm" class="col-xs-10" ng-submit="cC.addComment()">
 		<div class="row input-group">
-			<input ng-model="mpCtrl.npUrl" name="npUrl" required class="form-control" placeholder="URL или ID нового поста...">
+			<select
+				ng-model="cC.ncPostId" required
+				ng-options="post.$id as post.name for post in cC.posts"
+				class="form-control"
+				id="ncPostId">
+				<option value="" disabled selected class="ph">
+					Выберите комментируемый пост...
+				</option>
+			</select>
 			<span class="input-group-btn">
-				<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary">Добавть пост</button>
+				<button type="submit" ng-disabled="ncForm.$invalid" class="btn btn-primary" title="Сохранить комментарий">Сохранить</button>
 			</span>
 		</div><br>
 		<div class="row">
-			<input ng-model="mpCtrl.npName" name="np"  class="form-control" placeholder="Название нового поста...">
+			<textarea ng-model="cC.ncText" name="ncText" required class="form-control" placeholder="Текст нового поста..."></textarea>
 		</div><br>
 		<div class="row">
-			<textarea ng-model="mpCtrl.npCaption" name="npCaption"  class="form-control" placeholder="Текст нового поста..."></textarea>
+			<div class="col-xs-5">
+				<label>Одобрен
+					<input type="checkbox" ng-model="cC.ncAgreed">
+				</label>	
+			</div>
+			<div class="col-xs-7 text-right">
+				<input ng-model="cC.ncAuthor"  class="form-control" placeholder="Автор нового комментария...">	
+			</div>
 		</div>
 	</form>	
-		
 </div>
-
 <hr>
 
-<table class="table table-hover">
+<div class="row" ng-if="cC.showList()">
+	<div class="col-xs-8">
+		<button class="btn" ng-click=cC.loadData()>Ещё...</button>
+	</div>
+	<div class="col-xs-4  text-right" ng-if="cC.isShowPostF">
+		<select 
+			ng-model="cC.postF"
+			ng-options="post.$id as post.name for post in cC.posts"
+			ng-change="cC.changeF()"
+			class="form-control"
+			id='postF'>
+		</select>
+	</div>
+</div>
+<hr>
+
+<a id="allComments"></a>
+<table class="table table-hover"  ng-if="cC.showList()">
 <thead>
 	<tr class="row">
-		<th class="form-group col-xs-2"><label>Дата:</label></th>
-		<th class="form-group col-xs-1"><label>ID:</label></th>
-		<th class="col-xs-9">
-			<form role="form" class="form-inline">
-				<!-- <div class="form-group"> -->
-				<label>Посты:</label>
-				<input class="form-control" ng-model="mpCtrl.f" style="margin-left:100px;" placeholder="фильтр постов...">
-
-
-				<button type="submit" class="btn btn-primary" title="Очистить фильтр" ng-click="mpCtrl.clearF()">
-					<span class="glyphicon glyphicon-erase" aria-hidden="true" ></span>
-				</button>
-				<!--  </div> -->
-			</form>
+		<th class="col-xs-1">Дата:</th>
+		<th class="col-xs-1">Одобрен:</th>
+		<th class="col-xs-4">Текст:</th>
+		<th class="col-xs-2">
+			К посту:
+			<button class="btn" ng-class="{'btn-default' : !cC.isShowPostF}" title="Отфильтровать комментарии по постам" ng-click="cC.showPostF()">
+				<span class="glyphicon glyphicon-filter" aria-hidden="true" ></span>
+			</button>
 		</th>
+		<th class="col-xs-2">Автор:</th>
+		<th class="col-xs-2">Действия:</th>
+
 	</tr>
 </thead>
 <tbody>
-	<tr ng-repeat="p in mpCtrl.posts | filter:mpCtrl.f | orderBy:'-id'" class="row">
-		<td><small>{{p.date | date:'dd.MM.yy HH:mm'}}</small></td>
-		<td>{{p.id}}</td>
-		<td><a ui-sref="posts.item({item : p.name})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a></td>
+	<tr ng-repeat="c in cC.comments | filter:cC.f | orderBy:'-date'" class="row">
+	 <!-- | filter:cC.f | orderBy:'-date'  -->
+		<td><small>{{c.date | date:'dd.MM.yy  HH:mm'}}</small></td>
+		<td class="text-center">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="{{c.agreed}}"></span>
+		</td>
+		<td>
+			{{c.text}}
+			<!-- <a ui-sref="posts.item({item : p.$id})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a> -->
+		</td>
+		<td>
+			<a ui-sref="posts.item({item : c.postId})">
+				{{c.postId}}
+			</a>
+			<!-- {{c.postId}} -->
+		</td>
+		<td>{{c.author}}</td>
+		<td>
+			<button class="btn btn-info" title="Редактировать" ng-click="cC.uCom(c.$id)">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+			</button>
+			<button class="btn btn-danger" title="Удалить" ng-click="cC.dCom(c.$id)">
+				<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ></span>
+			</button>
+		</td>
 	</tr>
 </tbody>	
 </table>
+
 <p ng-if="mpCtrl.showInfo" class="text-right"><sub><i>Нажмите на страницу для получения детальной информации... </i></sub></p>
+
 <div ui-view></div>

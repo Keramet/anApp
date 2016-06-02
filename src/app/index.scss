@@ -73,3 +73,11 @@ div.spinner {
    font-style: italic; 
 }
 
+select:required:invalid {
+  color: DarkGray  ;
+  font-style: italic
+}
+option.ph {
+  display: none;
+}
+
