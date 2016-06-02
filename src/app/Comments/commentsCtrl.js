@@ -41,6 +41,7 @@
 
     this.clickAdd = function () {
       this.showAddComment = !this.showAddComment;
+      console.log("this.clickAdd");
 
       if (this.showAddComment) {
         this.ncAgreed = false;

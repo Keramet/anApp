@@ -7,17 +7,18 @@
       return {
         restrict: "E",
         replace: true,
-        scope: false,
+        scope: {  caption : "@",
+                  filter  : "=",
+                  show    : "="/*,  
+                  clickAdd: "&"  */},
         templateUrl: "app/main/headDivDir/headDivDir.tpl.html",
         link: function (scope, element, attrs) {
-          console.log("scope: ", scope);
-          console.log("scope.$parent: ", scope.$parent);
-          scope.clearF = function () { scope.f = ""; }
+          scope.clearF   = function () { scope.filter = ""; }
+          
+          scope.clickAdd = function () { 
+            scope.show = !scope.show;
+          }
 
-          // scope.clickAdd = function () { 
-          //   console.log("f: ", scope.f);
-          //   console.log("posts: ", scope.posts);
-          // }
         }
       
       }

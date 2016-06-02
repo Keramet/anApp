@@ -18,9 +18,6 @@
         return fbObj.$loaded();
       }
 
-      // result.getDataA = function () {
-      //   return fbArr.$loaded();
-      // }
 
       result.getDataByCount = function (count, nextId) {
         var refC = fb.child(ref)

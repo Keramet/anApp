@@ -16,13 +16,15 @@ angular
     this.showSpinner = false;
     this.showAddPost = false;
     this.isShowTagF  = false;
+    this.isLoadData  = false;
     this.showInfo    = true;   //  надпись, предлагающая кликнуть на посте
     
     this.loadData = function () {
-      fbSvc('posts').getDataA( this.postCount, this.nextId )
+      fbSvc('posts').getDataByCount( this.postCount, this.nextId )
         .then( function (data) {
           self.posts  = data;
           self.nextId = data[0].$id;
+          self.isLoadData = true;
         });
     }
     this.loadData();
@@ -39,10 +41,7 @@ angular
     fbSvc('tags').getData() 
       .then( function (data) {
         self.tags = data;
-      })
-      /*.then( function () {
-        self.sel = [ "u2", "bnnn" ];
-      })*/;
+      });
 
     this.showTagF = function () {
       this.isShowTagF = !this.isShowTagF;
@@ -73,22 +72,7 @@ angular
             "date" : Date.now(),
             "tagId": this.sel,
             "published": self.published
-          },
-          tagsObj = {};
-
-      // if (this.sel.length > 0) {
-      //   angular.forEach(this.sel, function(val) {
-      //     tagsObj[ val ] = true;   
-      //   });
-      //   post["tagIds"] = tagsObj
-      // } else {
-      //   console.log("this.sel: ", this.sel);
-      // }
-          
-      // console.log("this.sel: ", this.sel);
-      // console.log("this.tags: ", this.tags);
-      // console.log("this.sel[0]: ", this.sel[0]);
-      
+          };
 	
 	   	$timeout( function () {
         self.posts.$add( post );
@@ -100,18 +84,22 @@ angular
         self.showSpinner = false;
         self.showAddPost = false;
         console.log("Прошло 3сек.");
-        return fbSvc('posts').getDataA(); 
-       })
-      .then (function (data) {
-        console.log("self.posts: ", self.posts);
-        console.log("data: ", data);
-        console.log("data == self.posts: ", data == self.posts);
+      //   return fbSvc('posts').getDataA(); 
+      //  })
+      // .then (function (data) {
+      //   console.log("self.posts: ", self.posts);
+      //   console.log("data: ", data);
+      //   console.log("data == self.posts: ", data == self.posts);
       }) ;
     }
    
     this.clearF = function () { this.f = ""; }  
     this.clickPostRef = function () { this.showInfo = false; }
 
+    this.showList = function () {
+      return this.isLoadData && !this.showAddPost;
+    }
+    
   }// end of  mypostsCtrl
 
 
@@ -138,10 +126,8 @@ angular
       $anchorScroll();
     }
 
-
     $location.hash('postEnd');
     $anchorScroll();
-  //	mpCtrl.showInfo = false; 
   }
 
 })();

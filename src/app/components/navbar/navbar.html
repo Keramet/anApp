@@ -1,21 +1,26 @@
 <nav class="navbar navbar-static-top navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">
+      <a ui-sref="home" class="navbar-brand">
         <span class="glyphicon glyphicon-home"></span> anApp
       </a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
       <ul class="nav navbar-nav">
-        <li class="active"><a ng-href="/">Главная</a></li>
-        <li><a ng-href="#">Добавить...</a></li>
-        <li><a ui-sref="config">Настройки</a></li>
+        <!-- <li class="active"><a ng-href="/">Главная</a></li> -->
+        <!-- <li><a ng-href="#">Добавить...</a></li> -->
+        <li>
+          <a ui-sref="config">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            Настройки
+          </a>
+        </li>
       </ul>
 
-      <ul class="nav navbar-nav navbar-right acme-navbar-text">
+      <!-- <ul class="nav navbar-nav navbar-right acme-navbar-text">
         <li>Application was created {{ vm.relativeDate }}.</li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </nav>

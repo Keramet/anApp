@@ -1,29 +1,11 @@
 
-<!-- <head-div-dir></head-div-dir> -->
+<head-div-dir
+	caption ="Посты"
+	filter  ="mpCtrl.f"
+	show    ="mpCtrl.showAddPost">
+</head-div-dir>
 
-<div class="row well headDiv">
-	<div class="col-xs-4">
-		<span class="h2">ПОСТЫ</span>
-		<i>({{mpCtrl.posts.length}})</i>
-	</div>
-	<div class="col-xs-2">
-		<button ng-click="mpCtrl.clickAdd()" class="btn btn-success" title="Добавить категорию">
-			<span class="glyphicon glyphicon-plus-sign" aria-hidden="true">&ensp;Добавить</span>
-		</button>
-	</div>
-	<div class="col-xs-6 text-right">
-		<form role="form" class="form-inline">
-			<input class="form-control" ng-model="mpCtrl.f"  placeholder="фильтр постов...">
-
-			<button type="submit" class="btn btn-primary" title="Очистить фильтр" ng-click="mpCtrl.clearF()">
-				<span class="glyphicon glyphicon-erase" aria-hidden="true" ></span>
-			</button>
-		</form>
-	</div>
-</div>
-
-
-
+<hr>
 <a id="addPost"></a>
 <div class="row well" ng-if="mpCtrl.showAddPost">	
 	<div class="col-xs-2" >
@@ -32,13 +14,11 @@
 	</div>
 	<form name="npForm" class="col-xs-10" ng-submit="mpCtrl.addPost()">
 		<div class="row input-group">
-			<input ng-model="mpCtrl.npUrl" name="npUrl" required class="form-control" placeholder="URL или ID нового поста...">
+			<!-- <input ng-model="mpCtrl.npUrl" name="npUrl" required class="form-control" placeholder="URL или ID нового поста..."> -->
+			<input ng-model="mpCtrl.npName" name="np" required class="form-control" placeholder="Название нового поста...">
 			<span class="input-group-btn">
 				<button type="submit" ng-disabled="npForm.$invalid" class="btn btn-primary" title="Сохранить данные поста">Сохранить</button>
 			</span>
-		</div><br>
-		<div class="row">
-			<input ng-model="mpCtrl.npName" name="np"  class="form-control" placeholder="Название нового поста...">
 		</div><br>
 		<div class="row">
 			<textarea ng-model="mpCtrl.npCaption" name="npCaption"  class="form-control" placeholder="Текст нового поста..."></textarea>
@@ -63,37 +43,9 @@
 	</form>	
 </div>
 
-<hr>
-
 
 <a id="allPosts"></a>
-<!-- <div class="panel panel-success" ng-if="mpCtrl.showCatF">
-	<div class="panel-heading">
-		<h4>Фильтр постов по категориям</h4>
-	</div>
-	<div class="panel-body">
-		<div class="row">
-			<div class="col-xs-8">
-				<select 
-					ng-model="mpCtrl.catF"
-					ng-options="tagK as tagV.name for (tagK, tagV) in mpCtrl.tags"
-					class="form-control"
-					id="selectTags">
-				</select>
-			</div>
-			<div class="col-xs-4">
-				<button class="btn btn-success form-control" title="Получить отфильтрованный список постов" ng-click="pC.uPost()">
-					<span class="glyphicon glyphicon-filter" aria-hidden="true"></span> ОК
-				</button><br><br>
-				<button class="btn btn-warning form-control" title="Отменить фильтрование" ng-click="mpCtrl.showCatF=false">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Отмена
-				</button>
-			</div>
-		</div>
-	</div>
-</div> -->
-
-<div class="row">
+<div class="row" ng-if="!mpCtrl.showAddPost">
 	<div class="col-xs-8">
 		<button class="btn" ng-click=mpCtrl.loadData()>Ещё...</button>
 	</div>
@@ -109,33 +61,37 @@
 </div>
 <hr>
 
-<table class="table table-hover">
-<thead>
-	<tr class="row">
-		<th class="col-xs-2">Дата:</th>
-		<th class="col-xs-1">Published:</th>
-		<th class="col-xs-6">Пост:</th>
-		<th class="col-xs-1">
-			Кат.: <button class="btn" ng-class="{'btn-default' : !mpCtrl.showCatF}" title="Отфильтровать посты по категориям" ng-click="mpCtrl.showTagF()">
-				<span class="glyphicon glyphicon-filter" aria-hidden="true" ></span>
-			</button>
-		</th>
-		<th class="col-xs-2">Действия:</th>
-	</tr>
-</thead>
-<tbody>
-	<tr ng-repeat="p in mpCtrl.posts | filter:mpCtrl.f | orderBy:'-date'" class="row">
-		<td><small>{{p.date | date:'dd.MM.yy  HH:mm'}}</small></td>
-		<td>{{p.published}}</td>
-		<td><a ui-sref="posts.item({item : p.$id})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a></td>
-		<td>{{p.tagId}}</td>
-		<td>
+<div class="row" ng-if="mpCtrl.showList()">
+	<table class="table table-hover">
+		<thead>
+			<tr class="row">
+				<th class="col-xs-1">Дата:</th>
+				<th class="col-xs-1">Опубл.:</th>
+				<th class="col-xs-5">Пост:</th>
+				<th class="col-xs-2">
+					Tag: <button class="btn" ng-class="{'btn-default' : !mpCtrl.showCatF}" title="Отфильтровать посты по категориям" ng-click="mpCtrl.showTagF()">
+					<span class="glyphicon glyphicon-filter" aria-hidden="true" ></span>
+				</button>
+			</th>
+			<th class="col-xs-2">Действия:</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="p in mpCtrl.posts | filter:mpCtrl.f | orderBy:'-date'" class="row">
+			<td><small>{{p.date | date:'dd.MM.yy  HH:mm'}}</small></td>
+			<td>
+				<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="{{p.published}}"></span>
+			</td>
+			<td><a ui-sref="posts.item({item : p.$id})" ng-click="mpCtrl.clickPostRef()"><b>{{p.name}}</b> <i>({{p.text}})</i></a></td>
+			<td>{{p.tagId}}</td>
+			<td>
 
-		</td>
-	</tr>
-</tbody>	
+			</td>
+		</tr>
+	</tbody>	
 </table>
 
 <p ng-if="mpCtrl.showInfo" class="text-right"><sub><i>Нажмите на страницу для получения детальной информации... </i></sub></p>
+</div>
 
 <div ui-view></div>

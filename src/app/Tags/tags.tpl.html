@@ -1,5 +1,11 @@
+<head-div-dir
+	caption ="Категории"
+	filter  ="tC.f"
+	show    ="tC.showAddTag">
+</head-div-dir>
 
-<div class="row headDiv">
+
+<!-- <div class="row headDiv">
 	<div class="col-xs-4">
 		<span class="h2">КАТЕГОРИИ</span>
 		<i>({{tC.data.length}})</i>
@@ -18,10 +24,10 @@
 			</button>
 		</form>
 	</div>
-</div>
+</div> -->
 
 
-<table class="table table-hover">
+<table class="table table-hover" ng-if="!tC.showAddTag">
 <thead>
 	<tr class="row">
 		<th class="col-xs-2">URL/ID:</th>
