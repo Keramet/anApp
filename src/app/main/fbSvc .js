@@ -6,6 +6,7 @@
     .factory('fbSvc', [ '$firebaseObject', '$firebaseArray', 'FB_URL', fbSvc ]);
   
 
+  /** @ngInject */
   function fbSvc ($firebaseObject, $firebaseArray, FB_URL) {
     var fb = new Firebase(FB_URL);
 
@@ -17,44 +18,53 @@
       result.getData = function () {
         return fbObj.$loaded();
       }
-
-
-      result.getDataByCount = function (count, nextId) {
-        var refC = fb.child(ref)
-          .orderByKey()
-          .limitToLast(count);
-
-        if (nextId) refC = refC.endAt(nextId);
-        return $firebaseArray( refC ).$loaded();
-      }
-
-      result.getDataA = function ( count, nextId, tagId ) {
+      
+      result.getDataA = function (count, field, id) {
         var refA = fb.child(ref);
 
-        if (tagId)  refA = refA.orderByChild("tagId").equalTo( tagId );
-        if (count)  refA = refA.limitToLast( count );
-        if (nextId) refA = refA.endAt( nextId );
+        if ( count && !field )  refA = refA.orderByKey().limitToLast( count );
+        if ( field )  {
+          refA = refA.orderByChild( field );
+          if ( id )    refA = refA.equalTo( id );
+          if ( count ) refA = refA.limitToLast( count );
+        }
 
-        // var reff = new Firebase(FB_URL + 'posts/').orderByKey();
-        
-        // if (count)  reff = reff.limitToLast(count);
-        // if (nextId) reff = reff.endAt(nextId);
-        var reff = new Firebase(FB_URL + 'posts/')
-          .orderByChild("text").equalTo("Text of new post...").limitToLast(10);
-        
-        // if (count)  reff = reff.limitToLast(count);
-        // if (nextId) reff = reff.endAt(nextId);
-
-       return $firebaseArray( refA/*reff */).$loaded();
+       return $firebaseArray( refA ).$loaded();
       }
+
+      // result.getDataByCount = function (count/*, nextId*/) {
+      //   var refC = fb.child(ref)
+      //     .orderByKey()
+      //     .limitToLast(count);
+
+      //   // if (nextId) refC = refC.endAt(nextId);
+      //   return $firebaseArray( refC ).$loaded();
+      // }
+
+      // result.getDataA = function ( count, nextId, tagId ) {
+      //   var refA = fb.child(ref);
+
+      //   if (tagId)  refA = refA.orderByChild("tagId").equalTo( tagId );
+      //   if (count)  refA = refA.limitToLast( count );
+      //   if (nextId) refA = refA.endAt( nextId );
+
+      //   // var reff = new Firebase(FB_URL + 'posts/').orderByKey();
+        
+      //   // if (count)  reff = reff.limitToLast(count);
+      //   // if (nextId) reff = reff.endAt(nextId);
+      //   var reff = new Firebase(FB_URL + 'posts/')
+      //     .orderByChild("text").equalTo("Text of new post...").limitToLast(10);
+        
+      //   // if (count)  reff = reff.limitToLast(count);
+      //   // if (nextId) reff = reff.endAt(nextId);
+
+      //  return $firebaseArray( refA/*reff */).$loaded();
+      // }
 
 
       result.getRecord = function (rec) {
         return fbArr.$loaded()
           .then( function (data) {
-            // var r = data.$getRecord( rec );
-            // console.log("getRecord: ", r);
-            // return r;
             return data.$getRecord( rec );
           });
       }
@@ -66,12 +76,16 @@
           });
       }
 
+      result.updateData = function (id, data) {
+        return fb.child(ref).child(id).update( data );
+      }
+
       result.saveData = function (id, data) {
         return fb.child(ref).child(id).set( data );
       }
 
       result.pushData = function (data) {
-        return fb.child(ref).push( data );
+        return fb.child(ref).push( data ).key();
       }
 
       result.pushDataChild = function (ch, data) {
@@ -88,44 +102,68 @@
           });
       }
 
-      result.getCommentsByPost = function(postId, count) {
-        var arr = [],
-            cRef = fb.child(ref)
-          .orderByChild("pId").equalTo(postId);
+      // result.getCommentsByPost = function(postId, count) {   //  first variant
+      //   var arr = [],
+      //       cRef = fb.child(ref)
+      //         .orderByChild("pId").equalTo(postId);
      
-        if (count) cRef = cRef.limitToLast(count);
+      //   if (count) cRef = cRef.limitToLast(count);
 
-        return $firebaseArray( cRef ).$loaded()
-          .then( function (data) {
-            angular.forEach(data, function (item) {
-            //  var cId = item["cId"];
-
-              arr.push(item["cId"]);
-            })
-            return arr;
-          });
-      }
-
-      
-
-
-      // result.data = [];
-
-      // result.getData = function ( cb )  {
-      //   fbObj.$loaded()
+      //   return $firebaseArray( cRef ).$loaded()
       //     .then( function (data) {
-      //       angular.forEach( data, function (val, key) {
-      //         result.data.push( {"name": val, "url": key} ); 
+      //       angular.forEach(data, function (item) {
+      //         var cId = item["cId"];
+
+      //         arr.push(item["cId"]);
+      //       })
+      //       return arr;
+      //     });
+      // }
+
+
+      // result.getDataByField = function(field, id, count) {
+      //   var arr = [],
+      //       cRef = fb.child(ref)
+      //         .orderByChild("pId").equalTo(postId);
+     
+      //   if (count) cRef = cRef.limitToLast(count);
+
+      //   return $firebaseArray( cRef ).$loaded()
+      //     .then( function (data) {
+      //       angular.forEach(data, function (item) {
+      //         var cId = item["cId"];
+
+      //         arr.push(item["cId"]);
+      //       })
+      //       return arr;
+      //     });
+      // }
+
+      // getRelatinData - для связанных таблиц, реализующих отношение "многие ко многим". Пока не использую
+      // result.getRD = function (commonTab, field, id, count) {
+      //   var arr  = [],
+      //       cRef = fb.child( commonTab )
+      //         .orderByChild( field )
+      //         .equalTo( id )
+      //         .limitToLast( count );
+
+      //   return $firebaseArray( cRef ).$loaded()
+      //     .then( function (data) {
+      //       angular.forEach( data, function (item) {
+      //         fb.child( ref +"/"+ item["cId"] ).once( "value", function (snapshot) {
+      //           arr.push( snapshot.val() );
+      //         })
       //       });
 
-      //       if (cb) cb(result.data); 
-      //     })
-      //     .catch( function (e) { console.dir(ref + " loadError: ", e); });
-      // } 
+      //       return arr;
+      //     });
+      // }
+      
 
  
       return result;
-    }
+
+    }// end of  fbSvc
   }
 })();
 

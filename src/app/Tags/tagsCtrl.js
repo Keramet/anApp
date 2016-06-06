@@ -14,27 +14,27 @@
         nt       = {};    // new Tag
 
     refreshData(); 
-    this.showSpinner = false;
-    this.showAddTag  = false;
+    self.showSpinner = false;
+    self.showAddTag  = false;
    
 
-    this.clickAddTag = function () {
-      this.showAddTag  = true;
+    self.clickAddTag = function () {
+      self.showAddTag = !self.showAddTag;
       $timeout( function () {
         angular.element("input[name=ntUrl]").focus();
       }, 0 );  
     }
 
-    this.clearF = function () { this.f = ""; }
+    self.clearF = function () { self.f = ""; }
 
-    this.addTag = function () {
+    self.addTag = function () {
       var time = 3000,  // мс
           tag = {
-            "name": this.ntName || "new name",
-            "desc": this.ntDesc || "new description"
+            "name": self.ntName || "new name",
+            "desc": self.ntDesc || "new description"
           };
       
-      this.showSpinner = true;
+      self.showSpinner = true;
 
       $timeout( function () {
         console.log("Прошло ", time/1000, " сек.");
@@ -54,15 +54,15 @@
         });
     }
 
-    this.uTag = function (index) {  //  реализовать через update
-      this.showAddTag  = true;
-      this.ntUrl  = this.data[ index ].id;
-      this.ntName = this.data[ index ].name;
-      this.ntDesc = this.data[ index ].desc;
+    self.uTag = function (index) {  //  реализовать через update
+      self.showAddTag  = true;
+      self.ntUrl  = self.data[ index ].id;
+      self.ntName = self.data[ index ].name;
+      self.ntDesc = self.data[ index ].desc;
     }
 
-    this.dTag = function (index) {
-      var id = this.data[ index ].id;
+    self.dTag = function (index) {
+      var id = self.data[ index ].id;
 
       fbSvc( tags_url ).saveData( id, null )
         .then( function () {

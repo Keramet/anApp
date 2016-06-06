@@ -3,7 +3,7 @@
 
 angular
 	.module('anApp')
-    .controller('sbConfigCtrl', [ '$scope', 'fbSvc', sbConfigCtrl ]);
+  .controller('sbConfigCtrl', [ '$scope', 'fbSvc', sbConfigCtrl ]);
 
       
       function sbConfigCtrl ($scope, fbSvc) {

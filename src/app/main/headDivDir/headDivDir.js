@@ -9,15 +9,15 @@
         replace: true,
         scope: {  caption : "@",
                   filter  : "=",
-                  show    : "="/*,  
-                  clickAdd: "&"  */},
+                  show    : "=",  
+                  clickAdd: "&"  },
         templateUrl: "app/main/headDivDir/headDivDir.tpl.html",
         link: function (scope, element, attrs) {
           scope.clearF   = function () { scope.filter = ""; }
           
-          scope.clickAdd = function () { 
-            scope.show = !scope.show;
-          }
+          // scope.clickAdd = function () { 
+          //   scope.show = !scope.show;
+          // }
 
         }
       

@@ -4,122 +4,165 @@
 
   angular
     .module( 'anApp' )
-    .controller( 'commentsCtrl', [ '$timeout', 'fbSvc', commentsCtrl ]);
+    .controller( 'commentsCtrl', [ '$timeout', '$location', '$anchorScroll', 'fbSvc', commentsCtrl ]);
 
 
   /** @ngInject */
-  function commentsCtrl ($timeout, fbSvc) {
-  	var self = this;
+  function commentsCtrl ($timeout, $location, $anchorScroll, fbSvc) {
+  	var self       = this,
+        updateMode = false,   //  режим редактирования
+        commentId  = null;    //  для редактирования коммента
 
-    this.commentsCount  = 5;
-    this.nextId         = null;
-    this.showSpinner    = false;
-    this.showAddComment = false;
-    this.isLoadData     = false;
+    self.commentsCount  = 5;
+    self.loadCount      = 1;
 
-    this.loadData = function () {
-      fbSvc('comments').getDataByCount( this.commentsCount, this.nextId )
-        .then( function (data) {
-          // if (self.nextId) console.log("nextId", self.nextId);
-          self.comments   = data;
-          self.nextId     = data[0].$id;
-          self.isLoadData = true;
-          // console.log("data", data);
-        });
+    self.showSpinner    = false;
+    self.showAddComment = false;
+    self.isLoadData     = false;
+    self.isShowPostF    = false;  //  включен/выключен фильрт комментов по постам
+    self.isShowScrollMsg= false;
+
+    self.loadData = function () {
+      var count = self.commentsCount * self.loadCount,
+          field, id;
+
+      if ( self.isShowPostF && self.postF ) {
+        field = 'postId';
+        id    = self.postF;
+      }
+      return fbSvc('comments').getDataA( count, field, id )
+          .then( function (data) {
+            self.comments   = data; 
+            self.isLoadData = true;   
+          });
     }
-    this.loadData();
+
+    self.loadData();
+
+    fbSvc('posts').getDataA()   // подумать, как оптимизировать!
+      .then( function (data) { self.posts = data; });
     
-  //  fbSvc('comments').getData()
-  //    .then( function (data) { self.comments = data; });
-
-    fbSvc('posts').getDataA()
-      .then( function (data) {
-        self.posts  = data;
-        console.log("Посты загружены!");
-      });
-
-
-    this.clickAdd = function () {
-      this.showAddComment = !this.showAddComment;
-      console.log("this.clickAdd");
-
-      if (this.showAddComment) {
-        this.ncAgreed = false;
+    self.loadMore = function () {     // подгружать комменты
+      if (self.commentsCount * self.loadCount <= self.comments.length) {
+        self.loadCount++;
+        self.loadData()
+          .then ( function () {
+            $location.hash('endScroll');
+            $timeout( function () { $anchorScroll(); }, 0 ); 
+          });
+      } else { 
+        self.isShowScrollMsg = true;
         $timeout( function () {
-          angular.element("#ncPostId").focus();
-        }, 0 ); 
+          self.isShowScrollMsg = false;
+          self.loadCount--;     //  чтобы при клике подгружать данные
+        }, 6000 ); 
       }
     }
 
-    this.addComment = function () {
-     	this.showSpinner = true;
 
+    self.showPostF = function () {    //  
+      self.isShowPostF = !self.isShowPostF;
+
+      if ( self.isShowPostF ) {
+        $timeout( function () { angular.element("#postF").focus() }, 0 ); 
+      } else {
+        self.isLoadData = false;
+        self.loadCount  = 1;
+        self.comments   = null;
+        // self.nextId     = null;
+        self.loadData();
+      }
+    }
+
+
+    self.clickAdd = function () {
+      self.showAddComment = !self.showAddComment;
+      updateMode = false;
+
+      if (self.showAddComment) {
+        self.ncAgreed = false;
+        $timeout( function () { angular.element("#ncPostId").focus() }, 0 ); 
+      }
+    }
+
+    self.addComment = function () {
       var comment = {
-        "date"  : Date.now(),
-        "text"  : this.ncText,
-        "postId": this.ncPostId,  
-        "author": this.ncAuthor || "Anonim",
-        "agreed": this.ncAgreed
-      },
-          newComment = {};
+        "date"  : Date.now(),   //  дата создания
+        "dateU" : Date.now(),   //  дата изменеия
+        "text"  : self.ncText,
+        "postId": self.ncPostId,  
+        "author": self.ncAuthor || "Anonim",
+        "agreed": self.ncAgreed || false
+      };
 
-      // fbSvc('comments').pushDataChild( this.ncPostId, comment )
+      self.showSpinner = true;
+
+      //  ---[ Если связь постов и комментов реализована через промежуточную таблицу ]---
+      // fbSvc('comments').pushDataChild( self.ncPostId, comment )
       //   .then (function () {
       //     console.log("Комментарий сохранен.");
       //     return fbSvc("comments_posts").getCommentsByPost( self.ncPostId );
       //   })
-      //   .then (function (data) {
-      //     console.log(data);
-      //   });
+      //   .then (function (data) { console.log(data); });
+
+
+      if ( updateMode ) {
+        $timeout( function () {
+          delete comment["date"];   //  дату создания не изменяем
+          fbSvc('comments').updateData( commentId, comment )
+            .then( function () { console.log("Прошло 3сек.: комментарий изменён"); });                         
+        }, 3000)
+          .then( function () {
+              self.showSpinner    = false;
+              self.showAddComment = false;
+          });
+        return;
+      }
 	
 	   	$timeout( function () {
-        fbSvc('comments').pushData( comment );
+        return fbSvc('comments').pushData( comment );
      	}, 3000 )
+      // .then( function (cid) {    // не использую, т.к. связь без промежуточной таблицы. Будем использовать при отношении "многие ко многим"
+      //   fbSvc('comments_posts').pushData( {"cId": cid,
+      //                                      "pId": self.ncPostId} );
+      // })
       .then( function () {
+        console.log("Прошло 3сек.: комментарий сохранен!");
+        self.showSpinner    = false;
+        self.showAddComment = false;
         self.ncText   = "";
         self.ncPostId = "";
         self.ncAuthor = "";
-        self.showSpinner    = false;
-        self.showAddComment = false;
-        console.log("Прошло 3сек.");
-        return fbSvc('comments').getDataA(); 
-      })
-      .then (function (data) {
-        console.log("comments: ", data);
+       // commentId = null;
+        self.loadData();
       });
-    }
-    
-    this.changeF = function () {
-      console.log(this.postF);
+    }// end of  self.addComment
+
+
+    self.uCom = function (comment) {    //  updateComment
+      updateMode = true;
+      commentId  = comment.$id;
+      self.ncText   = comment.text;
+      self.ncPostId = comment.postId;
+      self.ncAuthor = comment.author;
+      self.ncAgreed = comment.agreed;
+      self.showAddComment = true;
     }
 
-    this.showPostF = function () {
-      this.isShowPostF = !this.isShowPostF;
-      if (this.isShowPostF) {
-        $timeout( function () {
-          angular.element("#postF").focus();
-        }, 0 ); 
-      }
-    }
-
-    this.uCom = function (id) {
-      alert("В процессе... :(");
-      console.log( "Update", id/*this.comments[index]*/ );
-    }
-
-    this.dCom = function (id) {
+    self.dCom = function (id) {       //  deleteComment
       fbSvc( "comments" ).saveData( id, null )
         .then( function () { console.log("Комментарий удалён"); } );
     }
-
-    this.clearF       = function () { this.f = ""; }
-    this.clickPostRef = function () { this.showInfo = false; }
     
-    this.showList = function () {
-      return this.isLoadData && !this.showAddComment;
+    self.showList = function () {
+      return self.isLoadData && !self.showAddComment;
     }
-
+    
+    self.commonFilter = function () { 
+      angular.element("#commonF").focus();
+      history.pushState('', document.title, window.location.pathname);  // убираю хеш из адресной строки 
+    };
+ 
   }// end of  commentsCtrl
-
 
 })();

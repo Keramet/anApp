@@ -1,31 +1,34 @@
 <head-div-dir
-	caption ="Категории"
-	filter  ="tC.f"
-	show    ="tC.showAddTag">
+	caption  ="Категории"
+	filter   ="tC.f"
+	show     ="tC.showAddTag"
+	click-add="tC.clickAddTag()">
 </head-div-dir>
 
+<hr>
 
-<!-- <div class="row headDiv">
-	<div class="col-xs-4">
-		<span class="h2">КАТЕГОРИИ</span>
-		<i>({{tC.data.length}})</i>
+<a id="addTag"></a>
+<div class="row well" ng-if="tC.showAddTag">	
+	<div class="col-xs-2" >
+		<my-spinner ng-if="tC.showSpinner"></my-spinner>
 	</div>
-	<div class="col-xs-2">
-		<button class="btn btn-success" title="Добавить категорию" ng-click="tC.clickAddTag()">
-			<span class="glyphicon glyphicon-plus-sign" aria-hidden="true">&ensp;Добавить</span>
-		</button>
-	</div>
-	<div class="col-xs-6 text-right">
-		<form role="form" class="form-inline">
-			<input class="form-control" ng-model="tC.f"  placeholder="фильтр категорий...">
+	<form name="ntForm" class="col-xs-10" ng-submit="tC.addTag()">
+		<div class="row input-group">
+			<input ng-model="tC.ntUrl" name="ntUrl" required class="form-control" placeholder="URL или ID новой категории..." ng-focus="tC.showAddTag">
+			<span class="input-group-btn">
+				<button type="submit" ng-disabled="ntForm.$invalid" class="btn btn-primary" title="Сохранить новую категорию">Сохранить</button>
+			</span>
+		</div><br>
+		<div class="row">
+			<input ng-model="tC.ntName" name="nt"  class="form-control" placeholder="Название новой категории...">
+		</div><br>
+		<div class="row">
+			<textarea ng-model="tC.ntDesc" name="ntDesc"  class="form-control" placeholder="Описание новой категории..."></textarea>
+		</div>
+	</form>	
+</div>
 
-			<button type="submit" class="btn btn-primary" title="Очистить фильтр" ng-click="tC.clearF()">
-				<span class="glyphicon glyphicon-erase" aria-hidden="true" ></span>
-			</button>
-		</form>
-	</div>
-</div> -->
-
+<hr>
 
 <table class="table table-hover" ng-if="!tC.showAddTag">
 <thead>
@@ -58,26 +61,6 @@
 </tbody>	
 </table>
 
-<hr>
 
-<div class="row well" ng-if="tC.showAddTag">	
-	<div class="col-xs-2" >
-		<my-spinner ng-if="tC.showSpinner"></my-spinner>
-	</div>
-	<form name="ntForm" class="col-xs-10" ng-submit="tC.addTag()">
-		<div class="row input-group">
-			<input ng-model="tC.ntUrl" name="ntUrl" required class="form-control" placeholder="URL или ID новой категории..." ng-focus="tC.showAddTag">
-			<span class="input-group-btn">
-				<button type="submit" ng-disabled="ntForm.$invalid" class="btn btn-primary" title="Сохранить новую категорию">Сохранить</button>
-			</span>
-		</div><br>
-		<div class="row">
-			<input ng-model="tC.ntName" name="nt"  class="form-control" placeholder="Название новой категории...">
-		</div><br>
-		<div class="row">
-			<textarea ng-model="tC.ntDesc" name="ntDesc"  class="form-control" placeholder="Описание новой категории..."></textarea>
-		</div>
-	</form>	
-</div>
 
 
