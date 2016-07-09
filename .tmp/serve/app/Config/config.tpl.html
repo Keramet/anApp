@@ -1,0 +1,51 @@
+<h1 class="h1">Настройки</h1>
+<div class="row">
+	<div class="col-xs-2">
+		 <button
+		 	class="btn btn-large btn-block"
+		 	ng-class="{'btn-primary':confC.isShowSb, 'btn-default':!confC.isShowSb}"
+		 	ng-click="confC.showSb()">
+		 	Сайдбар
+		 </button>
+	</div>
+	<div class="col-xs-2">
+		<button
+			class="btn btn-large btn-block" 
+			ng-class="{'btn-success':confC.isShowPosts, 'btn-default':!confC.isShowPosts}"
+			ng-click="confC.showPosts()">
+			Посты
+		</button>
+	</div>
+	<div class="col-xs-2">
+		<button
+			class="btn btn-large btn-block"
+			ng-class="{'btn-info':confC.isShowTags, 'btn-default':!confC.isShowTags}"
+			ng-click="confC.showTags()">
+			Категории
+		</button>
+	</div>
+	<div class="col-xs-3">
+		<button
+			class="btn btn-large btn-block"
+			ng-class="{'btn-warning':confC.isShowComments, 'btn-default':!isShowComments}"	
+			ng-click="confC.showComments()">
+			Комментарии
+		</button>
+	</div>
+	<div class="col-xs-3">
+		<button
+			class="btn btn-large btn-block"
+			ng-class="{'btn-default':!isShowAll}"
+			ng-click="confC.showAll()">
+			ВСЕ  СРАЗУ
+		</button>
+	</div>
+</div>
+<hr>
+
+<div ui-view="sbConfig" ng-if="confC.isShowSb"></div>
+<div ui-view="postsConfig" ng-if="confC.isShowPosts"></div>
+<div ui-view="tagsConfig" ng-if="confC.isShowTags">
+	tagsConfig
+</div>
+<div ui-view="commentsConfig" ng-if="confC.isShowComments"></div> 
