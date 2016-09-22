@@ -8,7 +8,8 @@
 #### В качестве <i>backend</i>а применяется NoSQL база данных <b>Firebase</b>
 
 #### Демонстрационный пример можно найти тут: http://keramet.kh.ua/2/
+#
+#
 
-
-## P.S.
-### Папки node_modules и bower_components залиты по просьбе руководителя проекта!
+### P.S.
+##### Папки <b>node_modules</b> и <b>bower_components</b> залиты по просьбе руководителя проекта!
